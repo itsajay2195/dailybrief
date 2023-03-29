@@ -5,32 +5,26 @@ const {height, width} = Dimensions.get('window');
 
 const ListItem = ({item, userFav, index, addFavorite}) => {
   return (
-    <View key={index} style={{flex: 1}}>
+    <View key={index} style={styles.container}>
       <Image
         source={{
           uri: item,
         }}
         resizeMode={'stretch'}
-        style={{width: width, height: height - StatusBar.currentHeight}}
+        style={styles.image}
       />
 
       <TouchableOpacity
         onPress={() => addFavorite(item)}
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          height: 80,
-          width: 20,
-        }}>
+        style={styles.favoriteWrapper}>
         {userFav.includes(item) ? (
           <Image
-            style={{height: 30, width: 30}}
+            style={styles.icon}
             source={require('../assets/fav-fill.png')}
           />
         ) : (
           <Image
-            style={{height: 30, width: 30}}
+            style={styles.icon}
             source={require('../assets/fav.png')}
           />
         )}
@@ -41,4 +35,17 @@ const ListItem = ({item, userFav, index, addFavorite}) => {
 
 export default ListItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+    },
+    image:{width: width, height: height - StatusBar.currentHeight},
+    favoriteWrapper:{
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        height: 80,
+        width: 20,
+      },
+      icon:{height: 30, width: 30}
+});

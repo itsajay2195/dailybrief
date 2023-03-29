@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   FlatList,
   StatusBar,
+  ActivityIndicator
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import ListItem from '../components/ListItem';
@@ -40,6 +41,7 @@ const Home = ({navigation}) => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      {!data.length>0 ?<ActivityIndicator size={"large"} color={"red"}/>:null}
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
