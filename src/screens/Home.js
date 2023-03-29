@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const {height,width} = Dimensions.get('window');
 
@@ -24,20 +25,29 @@ const Home = ({navigation}) => {
       .then(response => response.json())
       .then(data => setData(data.message))
       .catch(error => console.error(error));
-  }, [data]);
+  }, []);
 
   useEffect(() => {
     AsyncStorage.getItem('favorites').then(data => {
       if (data) {
-        setFavorites(JSON.parse(data));
+        setUserFav(JSON.parse(data));
       }
     });
   }, []);
 
-  // useEffect(() => {
-  //   AsyncStorage.setItem('favorites', JSON.stringify(favorites));
-  // }, [userFav]);
+  useEffect(() => {
+    AsyncStorage.setItem('favorites', JSON.stringify(userFav));
+  }, [userFav]);
 
+  const addFavorite = (dogImage) => {
+    setUserFav([...userFav, dogImage]);
+    };
+    
+    // Remove dog image from favorites
+    const removeFavorite = (dogImage) => {
+    const updatedFavorites = userFav.filter((favorite) => favorite !== dogImage);
+    setUserFav(updatedFavorites);
+    };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -55,18 +65,16 @@ const Home = ({navigation}) => {
             />
 
             <TouchableOpacity
-              // onPress={() => handleFavoritePress(item)}
+              onPress={() => addFavorite(item)}
               style={{
                 position: 'absolute',
                 top: 10,
                 right: 10,
-                backgroundColor: userFav.includes(item)
-                  ? 'yellow'
-                  : 'transparent',
-                padding: 10,
-                borderRadius: 20,
+                height:80,
+                width:20,
+              
               }}>
-              <Text>{userFav.includes(item) ? 'Unfavorite' : 'Favorite'}</Text>
+              {userFav.includes(item) ? <Image style={{height:30,width:30}} source={require("../assets/fav-fill.png")}/>: <Image style={{height:30, width:30}} source={require("../assets/fav.png")}/>}
             </TouchableOpacity>
           </View>
         )}
