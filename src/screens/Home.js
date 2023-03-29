@@ -4,32 +4,25 @@ import {
   View,
   Platform,
   SafeAreaView,
-  TouchableOpacity,
   FlatList,
-  Image,
   StatusBar,
-  Dimensions
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ListItem from '../components/ListItem';
+import { fetchDogImages, setFavorites } from '../utils/helpers';
 
-const {height,width} = Dimensions.get('window');
+
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
   const [userFav, setUserFav] = useState([]);
 
   useEffect(() => {
-    fetch('https://dog.ceo/api/breeds/image/random/20')
-      .then(response => response.json())
-      .then(data => setData(data.message))
-      .catch(error => console.error(error));
+    fetchDogImages().then((data) => setData(data));
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem('favorites', JSON.stringify(userFav));
+    setFavorites(userFav);
   }, [userFav]);
 
   const addFavorite = useCallback((dogImage) => {
