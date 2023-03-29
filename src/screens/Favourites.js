@@ -9,12 +9,10 @@ const {height,width} = Dimensions.get('window');
 const Favourites = () => {
   const [userFav,setUserFav] = useState([])
   useEffect(() => {
-    AsyncStorage.getItem('favorites').then(data => {
-      if (data) {
-        setUserFav(JSON.parse(data));
-      }
+    getFavorites('favorites').then(data => {
+      setUserFav(data);
     });
-  }, );
+  });
 
   const listItem = ({item, index})=>{
     return <ListItem item={item} userFav={userFav} index={index}  />

@@ -20,14 +20,13 @@ export const setFavorites = async userFav => {
 };
 
 
-export const getFavorites = async () =>{
+export const getFavorites = async (key) => {
     try {
-        await AsyncStorage.getItem('favorites').then(data => {
-            if (data) {
-              return JSON.parse(data)
-            }
-          });
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        return JSON.parse(data);
+      }
     } catch (error) {
-        
+      console.log(error);
     }
-}
+  };
