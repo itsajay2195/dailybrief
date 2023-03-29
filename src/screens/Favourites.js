@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,SafeAreaView, Platform } from 'react-native'
+import { StyleSheet, Text, View,SafeAreaView, Platform, StatusBar } from 'react-native'
 import React from 'react'
 
 const Favourites = () => {
