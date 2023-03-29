@@ -10,9 +10,10 @@ import {
   StatusBar,
   Dimensions
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ListItem from '../components/ListItem';
 
 const {height,width} = Dimensions.get('window');
 
@@ -28,56 +29,28 @@ const Home = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.getItem('favorites').then(data => {
-      if (data) {
-        setUserFav(JSON.parse(data));
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     AsyncStorage.setItem('favorites', JSON.stringify(userFav));
   }, [userFav]);
 
-  const addFavorite = (dogImage) => {
+  const addFavorite = useCallback((dogImage) => {
     setUserFav([...userFav, dogImage]);
-    };
+    },[userFav]);
     
     // Remove dog image from favorites
     const removeFavorite = (dogImage) => {
     const updatedFavorites = userFav.filter((favorite) => favorite !== dogImage);
     setUserFav(updatedFavorites);
     };
+
+  const listItem = ({item, index})=>{
+    return <ListItem item={item} userFav={userFav} index={index} addFavorite={addFavorite} />
+  }
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => (
-          <View key={index} style={{flex: 1}}>
-            <Image
-              source={{
-                uri: item,
-              }}
-              resizeMode={'stretch'}
-
-              style={{width: width, height: height-StatusBar.currentHeight}}
-            />
-
-            <TouchableOpacity
-              onPress={() => addFavorite(item)}
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                height:80,
-                width:20,
-              
-              }}>
-              {userFav.includes(item) ? <Image style={{height:30,width:30}} source={require("../assets/fav-fill.png")}/>: <Image style={{height:30, width:30}} source={require("../assets/fav.png")}/>}
-            </TouchableOpacity>
-          </View>
-        )}
+        renderItem={listItem}
       />
     </SafeAreaView>
   );

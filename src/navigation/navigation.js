@@ -21,19 +21,20 @@ function RootNavigation() {
           style={{flex: 1}}>
           <Tab.Navigator>
             <Tab.Screen
-              name="HomeScreen"
+              name="Home"
               component={Home}
               options={{
                 headerShown:false,
-                tabBarIcon: ({ color }) => <Image style={{height:24,width:24}} source={require("../assets/home.png")} />,
+                tabBarIcon: ({ color }) => <Image style={{height:24,width:24,tintColor:color}} source={require("../assets/home.png")} />,
               }}
             />
             <Tab.Screen
-              name="FavouritesScreen"
+              name="Favorites"
               component={Favourites}
               options={{
+                tabBarActiveTintColor:"red",
                 headerShown:false,
-                tabBarIcon: ({ color }) => <Image style={{height:24,width:24}} source={require("../assets/fav-fill.png")} />,
+                tabBarIcon: ({ color }) => <Image style={{height:24,width:24,tintColor:color}} source={require("../assets/fav-fill.png")} />,
               }}
             />
           </Tab.Navigator>
